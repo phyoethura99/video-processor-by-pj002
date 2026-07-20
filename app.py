@@ -110,9 +110,10 @@ def process_segment_with_retry(index, text, video_segment, audio_path, final_seg
             cycle_duration = play_dur + freeze1_dur + freeze2_dur
             num_cycles = math.ceil(audio_duration / cycle_duration)
             
-            zoom_in = "zoompan=z='min(zoom+0.0015,1.1)':d=1:s=hd720:fps=30"
-            zoom_out = "zoompan=z='max(zoom-0.0015,1.0)':d=1:s=hd720:fps=30"
-            no_zoom = "null"
+            # Add scale and setsar before zoompan to ensure consistent resolution
+            zoom_in = "scale=1280:720,setsar=1,zoompan=z='min(zoom+0.0015,1.1)':d=1:s=1280x720:fps=30"
+            zoom_out = "scale=1280:720,setsar=1,zoompan=z='max(zoom-0.0015,1.0)':d=1:s=1280x720:fps=30"
+            no_zoom = "scale=1280:720,setsar=1"
             
             f1_z = zoom_in if freeze1_zoom == "Zoom In" else (zoom_out if freeze1_zoom == "Zoom Out" else no_zoom)
             f2_z = zoom_in if freeze2_zoom == "Zoom In" else (zoom_out if freeze2_zoom == "Zoom Out" else no_zoom)
